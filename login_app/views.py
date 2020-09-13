@@ -55,7 +55,7 @@ def edit_profile(request):
         form = EditProfile(request.POST, request.FILES, instance=current_user)
         if form.is_valid():
             form.save()
-            form = EditProfile(instance=current_user)
+            # form = EditProfile(instance=current_user)
             return HttpResponseRedirect(reverse('login_app:profile'))
             
     return render(request, 'login_app/edit_profile.html', {'form': form})

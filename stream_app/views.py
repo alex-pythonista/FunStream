@@ -13,7 +13,10 @@ from .models import Video, Comment
 @login_required
 def home(request):
     videos = Video.objects.all()
-    return render(request, 'stream_app/home.html', {'videos': videos})
+    if request.method == 'GET':
+        search = request.GET.get('search', '')
+        result = Video.objects.filter(video_title__icontains=search)
+    return render(request, 'stream_app/home.html', {'videos': videos, 'search': search, 'result': result})
 
 @login_required
 def upload_video(request):
