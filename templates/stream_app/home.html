@@ -1,8 +1,28 @@
 {% extends 'navbar.html' %}
 {%block title_block %} Home {%endblock%}
-
+{% block css_block %}
+<style>
+    .col-sm-6{
+        width: 425px;
+        padding: 20px;
+    }
+</style>
+{% endblock %}
 {% block body_block %}
 
 <h3>Welcome to FunStream</h3>
-
+<div class="video-list">
+    <div class="row">
+        {% for video in videos %}
+        <div class="col-sm-6">
+            <a href="{% url 'stream_app:video_details' slug=video.slug %}"><img src="/media/{{video.thumbnail}}" alt="" width="425"><br></a>
+            <Strong>{{video.video_title}}</Strong> <br>
+            <img src="/media/{{video.user.profile.profile_picture}}" alt="" width="23px" height="23px" class="rounded-circle">{{video.user.username}} <br>
+            <small class="text-muted"><strong>Publish date: </strong>{{video.publish_date}}</small><br>
+            <small class="text-muted"><strong>Updated on: </strong>{{video.update_date}}</small> <br>
+            <b>{{video.video_comment.count}} Comments</b>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

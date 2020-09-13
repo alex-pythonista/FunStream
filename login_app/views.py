@@ -1,14 +1,15 @@
 # framework imports
-
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-# project imports
 
-from .forms import SignUpForm, LoginForm
+# project imports
+from .forms import SignUpForm, LoginForm, EditProfile
 from .models import Profile
+from stream_app.models import Video
+
 # Create your views here.
 
 def sign_up(request):
@@ -45,3 +46,17 @@ def logout_user(request):
 @login_required
 def profile(request):
     return render(request, 'login_app/profile.html', {})
+
+@login_required
+def edit_profile(request):
+    current_user = Profile.objects.get(user=request.user)
+    form = EditProfile(instance=current_user)
+    if request.method == 'POST':
+        form = EditProfile(request.POST, request.FILES, instance=current_user)
+        if form.is_valid():
+            form.save()
+            form = EditProfile(instance=current_user)
+            return HttpResponseRedirect(reverse('login_app:profile'))
+            
+    return render(request, 'login_app/edit_profile.html', {'form': form})
+

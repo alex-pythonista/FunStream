@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from .models import Profile
 
+# sign up form
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
         required=True,
@@ -27,6 +29,7 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+# login form
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         required=True,
@@ -41,3 +44,13 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+# edit profile form
+class EditProfile(forms.ModelForm):
+    fullname = forms.CharField(
+        required=False,
+        label="Full name",
+    )
+    class Meta:
+        model = Profile
+        exclude = ['user']

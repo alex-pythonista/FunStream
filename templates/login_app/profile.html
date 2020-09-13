@@ -3,6 +3,8 @@
 
 {% block body_block %}
 
+<!-- user profile section -->
+
 <div class="row">
     <div class="col-sm-4">
         {% if user.profile.profile_picture %}
@@ -13,13 +15,31 @@
         {% endif %}
     </div>
     <div class="col-sm-8"><br><br>
-        <strong>Fullname: </strong>{{user.profile.fullname}} <br>
+        <strong>Full name: </strong>{{user.profile.fullname}} <br>
         <strong>User name: </strong>{{user.username}} <br>
         <strong>Email address: </strong> {{user.email}} <br>
-        <strong>Website: </strong>{{user.profile.website}} <br>
+        <strong>Website: </strong><a href="{{user.profile.website}}">Click here to visit</a><br>
         <strong>About: </strong>{{user.profile.about}} <br><br>
-        <a href="#" class="btn btn-info btn-sm">Edit profile</a>
+        <a href="{% url 'login_app:edit_profile' %}" class="btn btn-info btn-sm">Edit profile</a> &nbsp;
+        <a href="{% url 'stream_app:upload_video' %}" class="btn btn-primary btn-sm">Upload video</a>
     </div>
 </div><hr>
+
+<!-- user video section -->
+
+<div class="my-videos">
+    <div class="row p-5">
+        {% for video in user.post_user.all %}
+        <div class="col-sm-6">
+            <img src="/media/{{video.thumbnail}}" alt="" width="425"><br>
+            <Strong>{{video.video_title}}</Strong> <br>
+            <small class="text-muted"><strong>Publish date: </strong>{{video.publish_date}}</small><br>
+            <small class="text-muted"><strong>Updated on: </strong>{{video.update_date}}</small> <br>
+            <b>{{video.video_comment.count}} Comments</b> &nbsp; 
+            <a href="{% url 'stream_app:edit_video' slug=video.slug %}" class="btn btn-secondary btn-sm">Edit Video</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
